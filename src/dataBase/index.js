@@ -2,7 +2,7 @@ const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize({
   host: 'localhost',
-  port: 5432,
+  port: 8889, // 5432
   dialect: 'postgres',
   database: 'js_todo',
   username: 'postgres',

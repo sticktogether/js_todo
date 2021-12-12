@@ -17,10 +17,6 @@ async function getUser(req, res) {
     
     //Поиск пользователя по id
     const user = await User.findByPk(userId)
-    if(!user) {
-        throw new ErrorResponse("User not found", 400)
-    }
-
     res.status(200).json({user: user});
 }
 
@@ -44,13 +40,15 @@ async function updateUser(req, res) {
 
 
 async function logout(req, res) {
-    const userId = req.userId
-
-    //Поиск токена по id пользователя
-    const token = await Token.findOne({where: {userId: userId}})
-
+    
     //Удаление токена из бд
-    token.destroy()
+    await Token.destroy(
+        {
+            where: {
+              value: req.header("x-access-token"),
+            },
+          }
+    )
 
     res.status(200).json({message: "ok"});
 }

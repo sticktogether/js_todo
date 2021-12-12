@@ -97,7 +97,6 @@ async function deleteToDoById(req, res, next) {
 async function deleteToDos(req, res, next) {
     const userId = req.userId
     await ToDo.destroy({
-        //truncate: true, Truncate all instances of the model.
         where: {
             userId
         }

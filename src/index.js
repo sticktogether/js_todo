@@ -5,7 +5,7 @@ const cors = require('cors');
 const apiTodosRouter = require('./controllers/api-todos.controller');
 const apiAuthRouter = require('./controllers/api-auth.controller');
 const apiUsersRouter = require('./controllers/api-users.controller');
-const { notFound, errorHandler, asyncHandler } = require('./middlewares/middlewares');
+const { notFound, errorHandler} = require('./middlewares/middlewares');
 const { initDB } = require('./dataBase');
 
 //Init zone

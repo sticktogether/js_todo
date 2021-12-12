@@ -2,9 +2,8 @@ const { Router } = require('express');
 const ErrorResponse = require('../classes/error-response');
 const User = require('../dataBase/models/User.model');
 const Token = require('../dataBase/models/Token.model')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 const { asyncHandler } = require('../middlewares/middlewares');
+const { nanoid } = require('nanoid')
 
 const router = Router();
 
@@ -16,7 +15,7 @@ function initRoutes() {
 async function createUser(req, res) {
     const { login, password, email, name } = req.body
     if (!login || !password) {
-        throw new ErrorResponse('Wrong email or password', 404);
+        throw new ErrorResponse('Wrong email or password', 400);
     }
     const candidate = await User.findOne({ where: { email } })
 
@@ -32,17 +31,17 @@ async function createUser(req, res) {
 }
 
 async function loginUser(req, res, next) {
-    const { email, password } = req.body
+    const { login, password } = req.body
 
-    //Отправлены ли почта и пароль
-    if (!email || !password) {
-        throw new ErrorResponse('Wrong email or password', 404);
+    //Отправлен ли пароль и логин
+    if (!password || !login) {
+        throw new ErrorResponse('Credentials not send', 400);
     }
-    const user = await User.findOne({ where: { email } })
+    const user = await User.findOne({ where: { login } })
 
     //Пользователь не найден
     if (!user) {
-        throw new ErrorResponse('No user by email', 404);
+        throw new ErrorResponse('No user by login', 400);
     }
 
     //Проверка пароля
